@@ -1,0 +1,151 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+body {
+  background-color: white;
+  text-align: center;
+  margin-top: 40px;
+  margin-left: 20%;   
+  margin-right: 20%;
+  margin-bottom:50px;
+}
+
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  text-transform: uppercase;
+  padding-top:40px;
+  padding-bottom:20px;
+}
+
+h3 {
+  font-family: "Space Grotesk", sans-serif;
+  text-transform: uppercase;
+  padding-top:50px;
+  padding-bottom:10px;
+}
+
+p {
+  padding-top:15px;
+  font-size: 17px;
+  font-family: "Chakra Petch", sans-serif;
+  
+}
+```
+
+## Eating Habits and Satiety Observation
+
+This section presents a summary of my eating habits, including the type of food I consumed, portion sizes, and how these influenced my fullness and time until I felt hungry again.
+
+```{r}
+library(tidyverse)
+logged_data<-read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTfA9NsfdrQ4xbZvvUFHITvjxyUXMEnAcc49f6RX6wL5T2YsvOluK6s_UTtdev-nhsA5iHlUXQ8Zmrx/pub?gid=1892366098&single=true&output=csv")
+latest_data <- logged_data %>%
+  select(-Timestamp) %>%
+  rename(
+    time_when_hungry = 1,
+    food_type = 2,
+    portion = 3,
+    minutes_until_hungry = 4,
+    fullness = 5,
+    activity = 6,
+    activity_level = 7
+  )
+
+minimum_min_until_hungry <- min(latest_data$minutes_until_hungry, na.rm = TRUE)
+maximum_min_until_hungry <- max(latest_data$minutes_until_hungry, na.rm = TRUE)
+mean_min_until_hungry <- mean(latest_data$minutes_until_hungry, na.rm = TRUE)
+
+minimum_hr_until_hungry <- (minimum_min_until_hungry/ 60) %>% round(1)
+maximum_hr_until_hungry <- (maximum_min_until_hungry/ 60) %>% round(1)
+mean_hr_until_hungry <- (mean_min_until_hungry/ 60) %>% round(1)
+
+number_of_response<- nrow(latest_data)
+mean_fullness<-mean(latest_data$fullness, na.rm = TRUE)
+
+```
+
+### Dynamic Comments
+I recorded a total number of `r number_of_response` responses.<br>
+Overall, my average fullness after eating was `r mean_fullness` out of 5.
+
+On average, it took `r mean_hr_until_hungry` hour(s) (`r mean_min_until_hungry` minutes) before I felt hungry again after eating.<br>
+The smallest observed interval between meals was `r minimum_hr_until_hungry` hour(s) (`r minimum_min_until_hungry` minutes), <br>
+while the longest interval was `r maximum_hr_until_hungry` hour(s) (`r maximum_min_until_hungry` minutes).
+
+
+### Food Type Distribution
+
+```{r fig.width=8}
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = food_type,fill =factor(food_type))) +
+  labs(
+    title = "Distribution of Food Types I had",
+    x = "Food Type",
+    y = "Count"
+  ) 
+```
+
+Most meals were main meals followed by snacks and few fruits, showing my daily eating habits pattern.
+
+
+
+### Portion Size Distribution
+
+```{r fig.width=7}
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = portion),fill = "#C1E7E4") +
+  labs(
+    title = "Distribution of food portion size I had",
+    x = "Portion Size",
+    y = "Count"
+  )
+```
+
+The data in this section indicates that my portion sizes are rarely very large (5), but there are many occasions when they are quite small (1 and 2). On average, the protion size is about `r mean(latest_data$portion)`, which is not too much.
+
+
+### Activity porpotion across different times when hungry
+
+```{r fig.width=8,fig.height=3}
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = minutes_until_hungry ,fill =activity) ) +
+  labs(
+    title = "Activity occurrence relative to minutes until feeling hungry",
+    x = "Minutes Pasted Until Hungry",
+    y = "Count",
+    fill = "Activity"
+  )
+
+yes_count <- sum(latest_data$activity == "Yes", na.rm = TRUE)
+no_count  <- sum(latest_data$activity == "No", na.rm = TRUE)
+
+most_common_activity <- if (yes_count > no_count) {
+  ""
+} else if (no_count > yes_count) {
+  "no"
+} else{
+  "both no activity and"
+}
+
+```
+
+
+When I felt hungry, most of the time there was `r most_common_activity` activity between my previous meal and the moment I became hungry. 
+
+In the few cases where there was activity (Yes), it tend to distrubute around shorter time which means it generally occurred after shorter intervals since the last meal. <br>
+This pattern may suggest that physical activity could have some influence on digesting and timing of hunger.
+
