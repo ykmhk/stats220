@@ -16,8 +16,8 @@ body {
   background-color: white;
   text-align: center;
   margin-top: 40px;
-  margin-left: 20%;   
-  margin-right: 20%;
+  margin-left: 21%;   
+  margin-right: 21%;
   margin-bottom:50px;
 }
 
@@ -26,6 +26,7 @@ h2 {
   text-transform: uppercase;
   padding-top:40px;
   padding-bottom:20px;
+  color:#27B2B4;
 }
 
 h3 {
@@ -38,7 +39,8 @@ h3 {
 p {
   padding-top:15px;
   font-size: 17px;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 300;
   padding-bottom:20px;
 }
 ```
@@ -156,7 +158,7 @@ This pattern may suggest that physical activity could have some influence on dig
 
 
 
-### Fullness level distribution across different use of time to feel hungry again
+### Fullness level across different period of time until hungry
 
 ```{r fig.width=8,fig.height=4}
 latest_data$fullness <- factor(latest_data$fullness)
