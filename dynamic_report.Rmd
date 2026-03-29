@@ -41,11 +41,21 @@ p {
   font-family: "Chakra Petch", sans-serif;
   
 }
+
+.bg-box {
+  border-radius: 15px 50px;
+  background-color:#ebebeb;
+  padding: 8px 30px 16px 30px;
+  margin: auto;
+  text-align: center;
+}
 ```
 
 ## Eating Habits and Satiety Observation
 
-This section presents a summary of my eating habits, including the type of food I consumed, portion sizes, and how these influenced my fullness and time until I felt hungry again.
+This section presents a summary of my eating habits, <br>
+including the type of food I consumed, portion sizes, <br>
+and how these influenced my fullness and time until I felt hungry again.
 
 ```{r}
 library(tidyverse)
@@ -97,8 +107,9 @@ latest_data %>%
   ) 
 ```
 
+<div class="bg-box">
 Most meals were main meals followed by snacks and few fruits, showing my daily eating habits pattern.
-
+</div>
 
 
 ### Portion Size Distribution
@@ -106,7 +117,7 @@ Most meals were main meals followed by snacks and few fruits, showing my daily e
 ```{r fig.width=7}
 latest_data %>%
   ggplot() +
-  geom_bar(aes(x = portion),fill = "#C1E7E4") +
+  geom_bar(aes(x = portion),fill = "#2DCACD") +
   labs(
     title = "Distribution of food portion size I had",
     x = "Portion Size",
@@ -114,10 +125,12 @@ latest_data %>%
   )
 ```
 
+<div class="bg-box">
 The data in this section indicates that my portion sizes are rarely very large (5), but there are many occasions when they are quite small (1 and 2). On average, the protion size is about `r mean(latest_data$portion)`, which is not too much.
+</div>
 
 
-### Activity porpotion across different times when hungry
+### Activity porpotion across different use of time to feel hungry again
 
 ```{r fig.width=8,fig.height=3}
 latest_data %>%
@@ -143,9 +156,34 @@ most_common_activity <- if (yes_count > no_count) {
 
 ```
 
-
+<div class="bg-box">
 When I felt hungry, most of the time there was `r most_common_activity` activity between my previous meal and the moment I became hungry. 
 
-In the few cases where there was activity (Yes), it tend to distrubute around shorter time which means it generally occurred after shorter intervals since the last meal. <br>
+In the few cases where there was activity (Yes),it tends to distrubute around shorter time which means it generally occurred after shorter intervals since the last meal. <br>
 This pattern may suggest that physical activity could have some influence on digesting and timing of hunger.
+</div>
 
+
+### Fullness level distribution across different use of time to feel hungry again
+
+```{r fig.width=8,fig.height=4}
+latest_data$fullness <- factor(latest_data$fullness)
+
+#Plot for fullness distribution across different minutes until feeling hungry
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = minutes_until_hungry ,fill = fullness) ) +
+  labs(
+    title = "Fullness relative to minutes until feeling hungry",
+    x = "Minutes Pasted Until Hungry",
+    y = "Count",
+    fill = "Fullness level"
+  )
+```
+
+<div class="bg-box">
+In cases where my fullness level is low, the data tends to be distributed around shorter time intervals, meaning I generally feel hungry again sooner after eating.
+
+This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.<br>
+This suggests that my level of fullness may have an influence on how long it takes for me to feel hungry again.
+</div>
