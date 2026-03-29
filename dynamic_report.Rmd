@@ -102,8 +102,8 @@ latest_data %>%
 ```
 
 
-Most meals were main meals followed by snacks and few fruits, <br>
-showing my daily eating habits pattern.
+Most meals were main meals followed by snacks with limited fruit intakes, <br>
+showing my daily eating habits pattern and suggesting that I could increase fruit consumption for better nutrition.
 
 
 
@@ -122,8 +122,10 @@ latest_data %>%
 
 
 The data in this section indicates that my portion sizes are rarely very large (5), <br>
-but there are many occasions when they are quite small (1 and 2). <br>
-On average, the protion size is about `r mean(latest_data$portion)`, which is not too much.
+but there are many occasions when they are quite small (1 and 2).
+
+On average, the portion size is about `r mean(latest_data$portion)`, which is moderate.<br>
+This suggests that my eating habits could be improved, for example by increasing the frequency of portion sizes 3 and 4 to promote healthier eating.
 
 
 
@@ -156,8 +158,7 @@ most_common_activity <- if (yes_count > no_count) {
 
 When I felt hungry, most of the time there was `r most_common_activity` activity between my previous meal and the moment I became hungry. 
 
-In the few cases where there was activity (Yes), it tends to distrubute around shorter time which means it generally occurred after shorter intervals since the last meal. <br>
-This pattern may suggest that physical activity could have some influence on digesting and timing of hunger.
+In the few cases where there was activity (Yes), it tended to occur after shorter intervals since the last meal. This pattern suggests that physical activity could influence digestion and the timing of hunger, giving me ideas to explore ways to extend the time until I feel hungry again.
 
 
 
@@ -179,7 +180,7 @@ latest_data %>%
 ```
 
 
-In cases where my fullness level is low, the data tends to be distributed around shorter time intervals, meaning I generally feel hungry again sooner after eating.
+In cases where my fullness level was low, the data tends to cluster around shorter intervals, meaning I generally felt hungry again sooner after eating.
 
 This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.<br>
-This suggests that my level of fullness may have an influence on how long it takes for me to feel hungry again.
+This insight suggests I could adjust portion sizes to maintain fullness longer or match my energy needs.
