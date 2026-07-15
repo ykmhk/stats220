@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 
 ```{css}
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
 body {
   background-color: white;
   text-align: center;
@@ -20,7 +22,7 @@ body {
 }
 
 h2 {
-  font-family: sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   text-transform: uppercase;
   padding-top:40px;
   padding-bottom:20px;
@@ -28,7 +30,7 @@ h2 {
 }
 
 h3 {
-  font-family: sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   text-transform: uppercase;
   padding-top:50px;
   padding-bottom:10px;
@@ -37,7 +39,7 @@ h3 {
 p {
   padding-top:15px;
   font-size: 17px;
-  font-family: sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 300;
   padding-bottom:20px;
 }
@@ -45,8 +47,8 @@ p {
 
 ## Eating Habits and Satiety Observation
 
-This section presents a summary of my eating habits, 
-including the type of food I consumed, portion sizes, 
+This section presents a summary of my eating habits, <br>
+including the type of food I consumed, portion sizes, <br>
 and how these influenced my fullness and time until I felt hungry again.
 
 ```{r}
@@ -78,11 +80,11 @@ mean_fullness<-mean(latest_data$fullness, na.rm = TRUE)
 ```
 
 ### Dynamic Comments
-I recorded a total number of `r number_of_response` responses.
+I recorded a total number of `r number_of_response` responses.<br>
 Overall, my average fullness after eating was `r mean_fullness` out of 5.
 
-On average, it took `r mean_hr_until_hungry` hour(s) (`r mean_min_until_hungry` minutes) before I felt hungry again after eating.
-The smallest observed interval between meals was `r minimum_hr_until_hungry` hour(s) (`r minimum_min_until_hungry` minutes), 
+On average, it took `r mean_hr_until_hungry` hour(s) (`r mean_min_until_hungry` minutes) before I felt hungry again after eating.<br>
+The smallest observed interval between meals was `r minimum_hr_until_hungry` hour(s) (`r minimum_min_until_hungry` minutes), <br>
 while the longest interval was `r maximum_hr_until_hungry` hour(s) (`r maximum_min_until_hungry` minutes).
 
 
@@ -100,7 +102,7 @@ latest_data %>%
 ```
 
 
-Most meals were main meals followed by snacks with limited fruit intakes, 
+Most meals were main meals followed by snacks with limited fruit intakes, <br>
 showing my daily eating habits pattern and suggesting that I could increase fruit consumption for better nutrition.
 
 
@@ -119,10 +121,10 @@ latest_data %>%
 ```
 
 
-The data in this section indicates that my portion sizes are rarely very large (5), 
+The data in this section indicates that my portion sizes are rarely very large (5), <br>
 but there are many occasions when they are quite small (1 and 2).
 
-On average, the portion size is about `r mean(latest_data$portion)`, which is moderate.
+On average, the portion size is about `r mean(latest_data$portion)`, which is moderate.<br>
 This suggests that my eating habits could be improved, for example by increasing the frequency of portion sizes 3 and 4 to promote healthier eating.
 
 
@@ -180,5 +182,5 @@ latest_data %>%
 
 In cases where my fullness level was low, the data tends to cluster around shorter intervals, meaning I generally felt hungry again sooner after eating.
 
-This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.
+This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.<br>
 This insight suggests I could adjust portion sizes to maintain fullness longer or match my energy needs.
