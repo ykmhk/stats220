@@ -52,8 +52,7 @@ including the type of food I consumed, portion sizes,
 and how these influenced my fullness and time until I felt hungry again.
 
 ```{r}
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 logged_data<-read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTfA9NsfdrQ4xbZvvUFHITvjxyUXMEnAcc49f6RX6wL5T2YsvOluK6s_UTtdev-nhsA5iHlUXQ8Zmrx/pub?gid=1892366098&single=true&output=csv")
 latest_data <- logged_data %>%
   select(-Timestamp) %>%
