@@ -10,8 +10,6 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 
 ```{css}
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
-
 body {
   background-color: white;
   text-align: center;
@@ -22,7 +20,7 @@ body {
 }
 
 h2 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: sans-serif;
   text-transform: uppercase;
   padding-top:40px;
   padding-bottom:20px;
@@ -30,7 +28,7 @@ h2 {
 }
 
 h3 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: sans-serif;
   text-transform: uppercase;
   padding-top:50px;
   padding-bottom:10px;
@@ -39,7 +37,7 @@ h3 {
 p {
   padding-top:15px;
   font-size: 17px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: sans-serif;
   font-weight: 300;
   padding-bottom:20px;
 }
