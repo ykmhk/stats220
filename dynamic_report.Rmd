@@ -182,5 +182,5 @@ latest_data %>%
 
 In cases where my fullness level was low, the data tends to cluster around shorter intervals, meaning I generally felt hungry again sooner after eating.
 
-This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.<br>
+This pattern is fairly reasonable as lower fullness levels are associated with shorter times until hunger, while higher fullness levels tend to correspond to longer intervals.
 This insight suggests I could adjust portion sizes to maintain fullness longer or match my energy needs.
