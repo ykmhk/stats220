@@ -1,0 +1,298 @@
+library(tidyverse)
+library(dplyr)
+library(magick)
+song_length <- c(216764, 225148, 161266, 186173, 175344, 213718, 202133, 205946, 258799, 160656, 161840, 191013, 174680, 224694, 96825, 168601, 184893, 263288, 172626, 174000, 214416, 174728, 136266, 202226, 176146, 185855, 213493, 162680, 153190, 207065, 207853, 193506, 179720, 227527, 254181, 198324, 164818, 189560, 224773, 185680, 187943, 2e+05, 165772, 212000, 186677, 153000, 242965, 212878, 261818, 185600, 214405, 231041, 270586, 187111, 179426, 214613, 165760, 200547, 195760, 221693, 215281, 186538, 152137, 143901, 216120, 188918)
+length(song_length)
+max(song_length)
+min(song_length)
+sum(song_length)
+
+song_popularity <- c(91, 33, 90, 89, 85, 94, 96, 92, 85, 88, 95, 67, 92, 88, 96, 76, 90, 79, 91, 89, 90, 67, 93, 83, 76, 72, 93, 86, 87, 80, 73, 84, 80, 71, 77, 87, 83, 96, 68, 75, 79, 81, 76, 89, 91, 90, 85, 93, 92, 97, 87, 81, 95, 76, 76, 71, 83, 67, 92, 82, 70, 83, 74, 90, 74, 93)
+subset <- song_popularity[14:28]
+subset
+min(subset)
+max(subset)
+
+#R 会自动对向量做“逐个元素运算”（vectorized operation）
+song_popularity <- c(96, 76, 77, 59, 83, 94, 74, 87, 90, 71, 89, 95, 70, 95, 83, 97, 80, 74, 68, 76, 92, 67, 92, 96, 76, 83, 74, 90, 90, 83, 63, 75, 91, 86, 96, 81, 85, 85, 33, 85, 90, 91, 95, 85, 71, 76, 80, 67, 83, 96)
+sum(song_popularity)
+sum(song_popularity * 10)
+sum(song_popularity + 9)
+sum(song_popularity / 2)
+sum(song_popularity - 8)
+
+song_length <- c(212878, 263288, 203807, 165772, 174680, 200547, 225664, 173549, 231832, 153190, 187943, 189560, 167480, 214405, 162680, 176146, 212000, 238805, 168601, 174000, 202735, 186538, 133613, 216120, 214416, 185680, 213493, 195013, 173381, 278440, 175163, 270586, 179426, 157890, 224694, 206385, 254181, 161266, 216764, 226088, 257213, 160656, 198324, 141805, 210560, 188918, 227527, 165760, 256000, 153000, 215281, 175344, 164818, 96825, 179720, 145800, 172626)
+round(sum(song_length) / 1000 /3600,2)
+
+
+song_title <- c("Come Back As A Country Boy", "Doin' This", "Banking On Me", "Closer (feat. H.E.R.)", "Light Switch", "You Right", "Shivers", "Buy Dirt", "Bussin", "Broadway Girls (feat. Morgan Wallen)", "Scorpio", "Home Sweet", "Meet Me At Our Spot", "I Love You So", "Oh My God", "Slow Down Summer", "Bad Habits", "pushin P (feat. Young Thug)", "Iffy", "abcdefu", "Never Say Never (with Lainey Wilson)", "Heat Waves", "good 4 u", "Woman", "Don't Play That", "Better Days (NEIKED x Mae Muller x Polo G)", "One Right Now (with The Weeknd)", "Essence (feat. Justin Bieber & Tems)")
+nchar(song_title)      # 把“文字”变成“数字”
+max(nchar(song_title))   # 最长标题字符数
+min(nchar(song_title))   # 最短标题字符数
+sum(nchar(song_title))   # 总字符数
+nchar(song_title[9])     # 第9个标题字符数
+
+df <- df %>%
+  rename(new_name = old_name)
+
+
+song_title <- c("The Joker And The Queen (feat. Taylor Swift)", "Essence (feat. Justin Bieber & Tems)", "I Wish", "Broadway Girls (feat. Morgan Wallen)", "Slow Down Summer", "Banking On Me", "Smokin Out The Window", "Me or Sum (feat. Future & Lil Baby)")
+song_popularity <- c(89, 75, 67, 85, 75, 83, 85, 76)
+song_length <- c(185422, 263288, 165760, 185600, 216764, 2e+05, 197442, 225664)
+tibble(song_title, song_length, song_popularity)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS7R6DHE_92iP3XMxWScK4fuHfomugS3IKXz4SEDhPi_8kwhUyqJTKAKm1byjHCEKRVnh-Y2mTG9RkH/pub?gid=1577204501&single=true&output=csv")
+
+song_data %>% View()
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS7R6DHE_92iP3XMxWScK4fuHfomugS3IKXz4SEDhPi_8kwhUyqJTKAKm1byjHCEKRVnh-Y2mTG9RkH/pub?gid=1907028705&single=true&output=csv")
+sum(song_data$song_popularity * 200)
+min(song_data$song_popularity)
+nchar(song_data$song_title[2])
+max(song_data$song_length)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=22653820&single=true&output=csv")
+names(song_data)[4]
+names(song_data)[2]
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1225680565&single=true&output=csv")
+typeof(song_data$energy)
+typeof(song_data$mode_name)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=39175924&single=true&output=csv")
+names(song_data)
+song_data %>%
+  rename(new_name = 3)
+
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=710632460&single=true&output=csv")
+View(song_data)
+song_data %>%
+  slice(3:4) %>%
+  View()
+song_data %>%
+  slice(-c(4,7)) %>%
+  View()
+song_data %>%
+  slice(-(3:6)) %>%
+  View()
+
+  song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=997193167&single=true&output=csv")
+song_data %>%
+  select(tempo, artist_name)
+
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1225680565&single=true&output=csv")
+names(song_data)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1331981750&single=true&output=csv")
+glimpse(song_data)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=22653820&single=true&output=csv")
+names(song_data)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=997193167&single=true&output=csv")
+print(song_data)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1225680565&single=true&output=csv")
+song_data %>%
+  select(mode_name, energy)
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=22653820&single=true&output=csv")
+song_data %>%
+  ggplot() +
+  geom_bar(aes(x = danceability))
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=2133150618&single=true&output=csv")
+song_data %>%
+  ggplot() +
+  geom_bar(aes(x = popularity), fill = "#aecdd2")
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=367178289&single=true&output=csv")
+song_data %>%
+  ggplot() +
+  geom_bar(aes(x = energy))
+song_data %>%
+  ggplot() +
+  geom_bar(aes(y = energy))
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1515567882&single=true&output=csv")
+song_data %>%
+  ggplot() +
+  geom_bar(aes(x = key_name)) +
+  labs(title = "STATS 220 is awesome")
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQjF1Hf5KQ9--IboWbmaXJ14tknXsXUcfTlqZM4CVI3OiSnG_w6BxQcD5EJ4lvF5UeVXXLPmWyckJQ2/pub?gid=1362162571&single=true&output=csv")
+song_data %>%
+  ggplot() +
+  geom_bar(aes(x = danceability, fill = key_name))
+
+song_popularity <- c(85, 76, 94, 96, 89, 76, 75, 87, 67, 70, 76, 74, 87, 83, 85, 72, 93, 96, 90, 83, 86, 85, 95, 85, 68, 75, 80, 74, 95, 97, 77, 90, 87, 67, 91, 90, 77, 81, 85, 93, 89, 82, 96, 85, 73, 83, 85, 76, 74, 63, 88, 91, 70, 83, 75, 88, 90, 95, 89, 96, 79, 98, 96, 75, 80, 91, 33, 85, 92, 84, 92, 87, 71, 83, 76, 93, 93, 92, 67, 87, 59, 86, 79, 92, 91, 81, 81, 83)
+sum(song_popularity[12:28])
+song_popularity[67]>song_popularity[68]
+sort(song_popularity,decreasing = TRUE)[78]
+
+song_length <- c(133613, 136266, 194050, 176146, 258799, 215281, 205946, 214613, 96825, 165772, 179720, 172626, 191013, 185422, 226088, 160239, 164818, 231041, 173182, 143901, 200547, 160656, 174680, 261818, 188918, 187111, 161853, 153000, 210560, 193346, 161840, 198324, 212878, 204316, 207853, 136760, 175344, 141805, 207065, 231832, 227527, 185855, 167480, 187943, 153190, 254181, 270586, 202735, 238805, 173381, 173549, 179426, 195013, 203807, 200000, 145800, 193506, 185680, 175163, 202133, 165760, 186173, 206385, 174000, 212000, 162680, 185600, 216764, 213493, 193279, 263288, 189560, 278440, 186538, 169237, 186677, 161266, 213718, 225148, 214405, 157890, 184893, 174728, 256000, 197442, 225664)
+sum(song_length < 167480)
+
+song_title <- c("half of my hometown (feat. Kenny Chesney)", "Cigarettes", "Sand In My Boots", "Still D.R.E.", "Ghost", "To Be Loved By You", "Heat Waves", "Banking On Me", "You Right", "Woman", "INDUSTRY BABY (feat. Jack Harlow)", "P power (feat. Drake)", "Bad Habits", "Beautiful Lies", "Home Sweet", "pushin P (feat. Young Thug)", "Freaky Deaky", "love nwantiti (ah ah ah)", "Boyfriend", "Super Gremlin", "Circles Around This Town", "Big Energy", "If I Was a Cowboy", "Sacrifice", "I Love You So", "Shivers", "One Right Now (with The Weeknd)", "Flower Shops (feat. Morgan Wallen)", "Save Your Tears (with Ariana Grande) (Remix)", "The Motto", "Fancy Like", "Do We Have A Problem?", "Never Say Never (with Lainey Wilson)", "Better Days (NEIKED x Mae Muller x Polo G)", "High", "We Don't Talk About Bruno", "MAMIII", "Do It To It", "AHHH HA", "Pressure", "she's all i wanna be", "Broadway Girls (feat. Morgan Wallen)", "Peru", "You Should Probably Leave", "23", "Levitating", "Hrs and Hrs", "By Your Side", "Never Wanted To Be That Girl", "THATS WHAT I WANT", "Rocking A Cardigan in Atlanta", "Don't Play That", "All Of You", "Nail Tech", "Doin' This", "Closer (feat. H.E.R.)", "Cold Heart - PNAU Remix", "'Til You Can't", "Bussin", "I'm Tired - From 'Euphoria' An HBO Original Series", "I Wish", "Scorpio", "What Else Can I Do?", "Oh My God", "abcdefu", "One Mississippi", "I Hate U", "The Family Madrigal", "STAY (with Justin Bieber)", "Good Morning Gorgeous", "Light Switch", "Worst Day", "Waiting On A Miracle", "AA", "Slow Down Summer", "Essence (feat. Justin Bieber & Tems)", "Knife Talk (with 21 Savage ft. Project Pat)", "Buy Dirt", "Smokin Out The Window", "Numb Little Bug", "good 4 u", "Dos Oruguitas", "Iffy", "I Hate YoungBoy", "Come Back As A Country Boy", "Meet Me At Our Spot", "TO THE MOON", "When I’m Gone (with Katy Perry)", "Surface Pressure", "Fingers Crossed", "Beers On Me", "Heart On Fire", "Me or Sum (feat. Future & Lil Baby)", "Rumors (feat. Lil Durk)", "Usain Boo", "The Joker And The Queen (feat. Taylor Swift)", "Enemy (with JID) - from the series Arcane League of Legends", "Need to Know", "Easy On Me")
+song_title[nchar(song_title) > 17]
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ynnfEAOH9G59D6ZS0EhW6X9taKBE2ou0Z6qO_XJUzwCuD_DjNvDNRNuouNivlgptmqyqBZYsrKTs/pub?gid=424581954&single=true&output=csv")
+song_data_sorted <- song_data %>%
+  arrange(desc(popularity))
+song_data_sorted$artist_name[1]
+song_data_filtered <- song_data %>%
+  filter(rand_var > 0.87)
+nrow(song_data_filtered)
+
+
+song_title <- c("Pressure", "Broadway Girls (feat. Morgan Wallen)", "Me or Sum (feat. Future & Lil Baby)", "High", "Beautiful Lies", "Still D.R.E.", "Better Days (NEIKED x Mae Muller x Polo G)", "Circles Around This Town", "Heart On Fire", "Rumors (feat. Lil Durk)", "23", "she's all i wanna be", "Oh My God", "Peru")
+
+song_length <- c(193279, 185600, 225664, 175163, 212878, 270586, 160656, 195760, 258799, 185855, 179720, 206772, 225148, 187111)
+
+song_popularity <- c(73, 85, 76, 87, 75, 91, 90, 76, 71, 83, 77, 92, 93, 85)
+
+song_data <- tibble(song_title, song_length, song_popularity)
+
+
+song_data <- song_data %>%
+  mutate(song_income = song_length * 0.02)
+song_data$song_income[4]
+
+song_data <- song_data %>%
+  mutate(song_title_lower = tolower(song_title))
+song_data$song_title_lower[14]
+
+song_data_f <-song_data %>%
+  filter(str_detect(song_title_lower, 
+                    "2"))
+nrow(song_data_f)
+
+song_length <- c(187943, 278440, 174728, 203807, 96825, 187111, 261818, 185680, 214416, 178147, 202133, 145800, 164818, 254181, 185422, 186538, 168601, 173381, 214405, 224694, 193346, 173182, 215281, 205946, 186677, 206772, 194050, 227527, 185600, 174000, 221693, 136266, 198324, 204316, 225664, 212000, 157890, 175163, 179426, 189560, 191013, 176146, 161840, 213493, 224773, 173549, 186173, 195760, 216764, 202735, 200547, 175344, 167480, 162680, 197442, 225148, 133613, 179720, 216120, 195013, 238805, 184893, 185855, 213718, 200000, 169237, 136760, 263288, 202226, 257213, 165772, 231832, 210560, 231041, 152137, 206385, 242965, 174680, 256000, 214613, 141805, 168873)
+sum(song_length != 191013)
+
+
+song_title <- c("Usain Boo", "By Your Side", "Better Days (NEIKED x Mae Muller x Polo G)", "Banking On Me", "One Mississippi", "You Right", "Doin' This", "Dos Oruguitas", "You Should Probably Leave", "Sacrifice", "good 4 u", "Me or Sum (feat. Future & Lil Baby)", "Iffy", "Easy On Me", "she's all i wanna be", "Super Gremlin", "All Of You", "Never Wanted To Be That Girl", "Numb Little Bug", "Beers On Me", "Shivers", "Buy Dirt", "Still D.R.E.", "Do We Have A Problem?", "Cold Heart - PNAU Remix", "Never Say Never (with Lainey Wilson)", "Smokin Out The Window", "To Be Loved By You", "We Don't Talk About Bruno", "Rumors (feat. Lil Durk)", "Worst Day", "High", "Broadway Girls (feat. Morgan Wallen)", "Freaky Deaky", "Do It To It", "Nail Tech", "What Else Can I Do?", "One Right Now (with The Weeknd)", "Meet Me At Our Spot", "Cigarettes", "Pressure", "abcdefu", "Peru", "AHHH HA", "THATS WHAT I WANT", "P power (feat. Drake)", "Come Back As A Country Boy", "Flower Shops (feat. Morgan Wallen)", "Light Switch", "Fancy Like", "Closer (feat. H.E.R.)", "Don't Play That", "Slow Down Summer", "Sand In My Boots", "If I Was a Cowboy", "The Family Madrigal", "Home Sweet", "Bad Habits", "Knife Talk (with 21 Savage ft. Project Pat)", "The Motto", "Rocking A Cardigan in Atlanta", "Good Morning Gorgeous", "Ghost", "Save Your Tears (with Ariana Grande) (Remix)", "Circles Around This Town", "pushin P (feat. Young Thug)", "Woman", "I Hate YoungBoy", "Levitating", "Scorpio", "MAMIII", "Boyfriend", "When I’m Gone (with Katy Perry)", "Need to Know", "Essence (feat. Justin Bieber & Tems)", "'Til You Can't", "Waiting On A Miracle", "Bussin", "Fingers Crossed", "Big Energy", "Heat Waves", "TO THE MOON", "Oh My God", "Beautiful Lies", "I Hate U", "Enemy (with JID) - from the series Arcane League of Legends", "The Joker And The Queen (feat. Taylor Swift)", "City of Gods")
+song_title[nchar(song_title) > 7]
+
+
+library(jsonlite)
+song_data<-fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab3b_json40.json")
+song_data$track_name[54]
+duration_ms <-song_data %>% pull(duration_ms)
+length(duration_ms)
+median(duration_ms)
+track_popularity<-song_data %>% pull(track_popularity)
+length(unique(track_popularity))
+
+song_data %>%
+  separate_rows(artist_name, sep = ", ") %>%
+  pull(artist_name) %>%
+  unique() %>%
+  length()
+
+sum(song_data$track_popularity > 78 & str_detect(song_data$artist_genre, "pop"),na.rm = TRUE)
+song_data %>%
+  filter(track_popularity > 68,
+         str_detect(artist_genre, "pop")) %>%
+  nrow()
+
+pop_songs <- song_data %>%
+  mutate(pop = ifelse(str_detect(artist_genre, "pop"), "yes", "no"))
+pop_songs$pop[25]
+
+pop_songs <- song_data %>%
+  mutate(pop =str_detect(artist_genre, "pop"))
+pop_songs$pop
+
+pop_songs %>%
+  group_by(pop) %>%
+  summarise(median_popularity = median(track_popularity, na.rm = TRUE))
+
+long_songs <- song_data %>%
+  mutate(track_name_num_words = str_count(track_name, "\\S+"))
+long_songs$track_name_num_words[2]
+
+sum(long_songs$track_name_num_words > 3)
+
+-4:0
+
+song_title <- c("Who Let the Dogs Out", "She Bangs - English Version", "Most Girls", "All The Things She Said", "noflowrs[instrw]", "Lose Yourself", "AMAZING", "Always On Time", "Get The Party Started - P!nk Noise Disco - Edit", "Family Affair", "U Got It Bad", "The Tide Is High - Radio Mix", "Round & Round")
+
+song_length <- c(150581, 280626, 298960, 214440, 66206, 320626, 209200, 245133, 223493, 265866, 247840, 206093, 186493)
+
+song_popularity <- c(38, 64, 56, 86, 36, 76, 78, 77, 23, 82, 73, 70, 59)
+
+song_released_after_2015 <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+
+mystery_vector<-song_title[c(3,2,11)]
+mystery_vector
+max(song_length-10)
+paste("The sum of all the popularity scores for the ",length(song_popularity)," songs I have been given data for is ",sum(song_popularity),".",sep='')
+
+
+song_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRZWC8O9g6_mHh6Hs0E4E2YwSeasXXUDB5hxCLtA8UEnVrrvf6_d2pYbfkMufBqoDx-AfaxDpcpJlED/pub?gid=476987712&single=true&output=csv") %>%
+  rename(artist_name = 5)
+View(song_data)
+nrow(song_data)
+names(song_data[2])
+names(song_data)
+song_data$track_popularity[17]*80
+
+artist_data <- song_data%>%
+  separate_rows(artist_name,sep=", ")
+max(nchar(artist_data$artist_name))
+
+img <- image_read("cat.png")
+img_small <- image_scale(img, "200x200")
+image_append(c(img1, img2), stack = TRUE)
+
+
+
+num_learning_methods <- c(3, 5, 3, 4, 3, 3, 2, 3, 3, 5, 4, 3, 5)
+survey_length <- c("Appropriate in length", "Too long", "Appropriate in length", "Appropriate in length", "Appropriate in length", "Too long", "Appropriate in length", "Appropriate in length", "Appropriate in length", "Appropriate in length", "Appropriate in length", "Appropriate in length", "Appropriate in length")
+country <- c("Germany", "Indonesia", "United States of America", "Australia", "United States of America", "China", "Austria", "Canada", "Serbia", "Brazil", "Argentina", "Netherlands", "Spain")
+num_languages <- c(10, 5, 2, 5, 7, 3, 8, 4, 8, 8, 2, 4, 13)
+codes_R <- c(FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE)
+highest_ed_bachelors <- c(FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE)
+
+typeof(survey_length)
+length(num_learning_methods)
+sum(nchar(country))
+max((num_languages-14)[3:8])
+
+survey_data <- read_csv("https://stat.auckland.ac.nz/~fergusson/test_data/CQbKSIxYSs.csv")
+survey_data$num_learning_methods[107]
+names(survey_data[5])
+glimpse(survey_data)
+
+
+post_title <- c("Has today's 3A.2 recorded lecture been uploaded yet?", "lecture slides available in CANVAS", "Changing features", "Code Chunks", "append function not working - solved :)", "Bar charts and summary values", "What does static statement mean", "Issue with Lab Task 1", "css code still showing in my report", "ggplot() function not generating graphs", "Pin-code for IIB set up", "Subtitle for bar graphs", "Running R code", "Name of Files", "PART 3", "Part3", "How do I add ID attributes to markdown?", "Pass Requirements", "Blanks in Google sheet/graphs", "Lab Image Scaling", "About Lab Task", "Static", "Project 1", "Additional packages", "Rename", "Lecture slides not showing all images on mobile", "Saving the code", "Past test questions answer", "Project 2 grades", "Practice Qs", "CSS displaying in knitted file", "Test open book", "Submission of GitHub page", "Meme Creation", "Tips for designing a database in third normalised form", "Manipulating Data", "README.md file for GitHub - colour", "Local Files", "Saving the code", "Creativity", "same question in survey", "README.md file for GitHub", "Meme won't generate when I knit")
+post_about_project <- c(FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+post_day <- c("Tue", "Mon", "Thu", "Tue", "Fri", "Sun", "Thu", "Mon", "Sat", "Fri", "Tue", "Tue", "Mon", "Mon", "Tue", "Fri", "Thu", "Mon", "Fri", "Mon", "Tue", "Tue", "Tue", "Wed", "Thu", "Mon", "Sat", "Wed", "Tue", "Thu", "Wed", "Tue", "Wed", "Tue", "Tue", "Mon", "Fri", "Thu", "Sat", "Tue", "Wed", "Tue", "Wed")
+post_hour <- c("2 AM", "4 AM", "1 AM", "9 AM", "9 AM", "11 PM", "10 AM", "11 PM", "2 AM", "6 AM", "2 AM", "2 AM", "3 AM", "9 PM", "1 AM", "4 AM", "7 AM", "1 AM", "4 AM", "9 PM", "2 AM", "5 AM", "5 AM", "1 AM", "2 AM", "4 AM", "10 PM", "5 AM", "1 AM", "5 AM", "6 AM", "1 AM", "6 AM", "10 PM", "10 PM", "8 AM", "11 AM", "4 AM", "10 PM", "3 AM", "4 AM", "9 PM", "4 AM")
+post_num_views <- c(85, 103, 176, 150, 145, 170, 328, 194, 227, 165, 102, 116, 124, 139, 252, 182, 171, 167, 177, 189, 173, 162, 232, 163, 154, 116, 138, 26, 49, 6, 129, 45, 113, 230, 29, 158, 171, 179, 138, 125, 151, 263, 106) 
+sample_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQx_rB-wkxyOpomOn0kfLIDzSFhXogd90rUbEQS8oO5PrXs-HsHUWXL-iZQ7hDVk4tZnZVp8KnmJ3C_/pub?gid=0&single=true&output=csv")
+
+
+
+?c()
+
+json_url <- "https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab3B.json"
+
+song_data <- fromJSON(json_url) 
+
+# find out how many unique/different values
+num_unique_char <- song_data %>%
+  pull(track_name) %>%
+  nchar() %>%
+  unique() %>%
+  length()
+
+# compare this to the number of songs/rows in the data frame
+num_unique_char < nrow(song_data)
+
+
+
+

@@ -1,0 +1,58 @@
+"0","library(magick)
+library(tidyverse)
+
+img <- image_read(""inspo_meme.png"")
+# meme= img passed to two image_annotate to add text on
+meme <- img %>%   
+  image_annotate(
+    ""       Let's see if this fixes the two bugs        "",
+    gravity = ""center"",
+    location = ""+0-50"",    #moved up
+    size = 45,
+    color = ""white"",
+    boxcolor = ""black"",
+    font = ""Impact"",
+  ) %>%     # image with both text layers applied
+  image_annotate(
+    "" IT CREATED TWO MORE "",
+    gravity = ""south"",
+    location = ""+0+45"",
+    size = 50,
+    color = ""white"",
+    boxcolor = ""black"",
+    font = ""Impact""
+  )
+
+meme
+"
+"0",""
+"0","image_write(meme, ""my_meme.png"")"
+"0",""
+"0",""
+"0","# get the image dimensions"
+"0","info <- image_info(meme)"
+"0","img_width <- info$width"
+"0","img_height <- info$height"
+"0",""
+"0","# split the image "
+"0","top_half <- meme %>%"
+"0","  image_crop(geometry = geometry_area(width = img_width, height = img_height/2, ))"
+"0",""
+"0","bottom_half <- meme %>%"
+"0","  image_crop(geometry = geometry_area(width = img_width, height = img_height/2, y_off = img_height/2))"
+"0",""
+"0","bottom_half_modulated <- bottom_half %>%image_modulate(brightness = 120, saturation = 80)"
+"0",""
+"0","frame1 <- top_half"
+"0","frame2 <- top_half"
+"0","frame3 <- bottom_half_modulated"
+"0","frame4 <- bottom_half_modulated "
+"0",""
+"0","# combine "
+"0","frames <- c(frame1, frame2, frame3, frame4)"
+"0",""
+"0",""
+"0","animation <- image_animate(frames, fps = 1) "
+"0",""
+"0","# display"
+"0","animation"

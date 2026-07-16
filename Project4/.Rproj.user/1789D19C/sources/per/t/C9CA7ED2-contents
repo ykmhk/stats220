@@ -1,0 +1,147 @@
+---
+title: "Project 4"
+author: Yufan Yang
+output: html_document
+date: "2026-05-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+My individual data collection focused on understanding my personal eating and satiety patterns over time. I was interested in the fact that I often feel hungry shortly after eating, and I wanted to investigate what might be influencing this.
+
+I included examining how different food types and portion sizes affected my fullness duration, and whether physical activity played a role in changing these patterns.
+
+Across multiple days and meals, I recorded:
+
+* the time I started feeling hungry
+* the time of my previous meal
+* the type of food I consumed
+* portion size
+* my self-reported fullness level after eating
+* whether I engaged in any physical activity between meals (and if yes what type)
+
+Over time, this created a data set that can be seen as a personal observation of my digestion and satiety response under different conditions.
+<br>
+<br>
+
+
+### Changes made to the Google Form (Project 2 -> Project 4)
+
+Rather than adding completely new questions, I initially decided to change the type of one of my existing questions instead. (Which now I regreted doing.)
+
+After learning more types of visualisations and how to use the {lubridate} package, I realised I no longer needed my original question: 
+
+“How many minutes has it been since the last meal?”
+
+This question had originally been designed mainly for creating a simple bar graph using numeric values. I changed it into a question asking for the actual time of the previous meal instead, which transformed the response from a numeric variable into a time variable and gave me much more flexibility for analysing time patterns in R.
+
+When importing the updated dataset into my R script, I first tried removing the older responses using:
+
+`new_logged_data <- logged_data %>%`
+`slice(30:nrow(logged_data))`
+
+so that only the newer entries with the updated format would remain.
+However, after I finished most of the project, I later tried opening my old Project 2 HTML file and realised it no longer worked properly, I assume it's because of the mixture of old and new data types which caused compatibility problems.
+
+Since I wanted to preserve my original Project 2, I decided to duplicate my original Google Form.<br>
+And to fix all problems, I:
+
+* copied the original Google Form
+* reverted the structure back to its original version
+* manually re-entered the updated responses into the new form one by one, and copied in the old datas from project 2 and manually calculated and changed the numeric minutes of duration to the time I had last meal.
+* removed new(inconsistent) data from the old dataset
+
+This allowed Project 2 to function again as intended.
+
+For Project 4, I imported the CSV connected to the new form instead. Since the timestamps in the copied form were no longer meaningful, I simply removed the Timestamp column and renamed the remaining variables:
+
+`new_logged_data <- logged_data %>%`
+`select(-Timestamp) %>%`
+`rename(...)`
+
+As the workflow was fairly dynamic, I only needed to change the imported CSV file and variable names — most of the rest of my code still worked without major changes.
+<br>
+<br>
+
+
+### Creating my data visualisations
+I focus mainly on variables related to fullness duration, food type, portion size/fullness, and exercise — basically everything I collected — since the overall project is about understanding my eating habits and hunger patterns and I want the visualisations to show both behavioural patterns and relationships between variables.
+
+For the hunger frequency graph, I chose a grouped bar chart because it clearly compared how often I felt hungry during different times of the day while also showing differences in portion size.
+
+For the portion size and fullness duration graph, I used jittered points to display the raw observations and preserve variability in the data. I then added diamond-shaped summary points from a separate summarised dataset (exercise) to compare average behaviour between cases where I did or did not perform moderate exercise.
+
+For the food type visualisation, I used boxplots with points so I could compare overall distributions while still showing individual observations. I also mapped fullness level to colour intensity to add another layer of information without needing a separate graph.
+<br>
+<br>
+
+
+
+### What I tried but found did not work
+
+**One issue I encountered was trying to calculate the time difference between 'time_when_hungry' and 'time_of_last_meal'. **<br>
+At first, I tried using: 
+
+`difftime(time_when_hungry, time_of_last_meal, units = "mins")`
+
+directly, but it did not work because my variables only contained times (eg 10:00:00) and not full date-time values. Since `difftime()` requires complete date-time objects, I solved this by temporarily pasting a dummy date onto both time variables before calculating the difference.
+
+**Another issue occurred in the portion_size_vs_fullness_duration_plot.** <br>
+Initially, I tried using only the summarised exercise dataset for the entire graph, but later realised it only contained two rows and could not represent the full distribution of observations. I therefore used the raw dataset for the jittered points and only used the summarised data for the mean points.
+<br>
+<br>
+<br>
+<br>
+
+
+## Visual data story
+
+### [My visual data story webpage](https://ykmhk.github.io/stats220/visual_data_story.html)
+
+My visual data story demonstrates creativity through both the design of my visualisations and the way I transformed the data.
+
+For example, I used `mutate()` to create several new variables from the original form data rather than only analysing the raw responses directly. These included:
+minutes_used_to_feel_hungry_again, created using `{lubridate}` and `difftime()` to calculate how 
+* long it took before I felt hungry again
+* did_moderate_exercise, created using `ifelse()` and detecting the word “moderate”
+* meal_period, which grouped times into Morning, Afternoon, Evening, and Night to make temporal patterns easier to analyse
+
+This allowed me to explore behavioural patterns that were not directly visible in the raw dataset.
+
+I also demonstrated creativity by layering multiple variables into single visualisations instead of using only basic charts. 
+
+For example, in my food type plot, I used `geom_jitter(aes(fill = fullness))` to map fullness levels to colour intensity, allowing the graph to communicate an additional variable without needing a separate plot.
+In addition, I combined multiple geoms within the same graphs, such as:
+
+* boxplots with jittered observations
+* raw data with summarised mean points
+* grouped bar charts with annotations
+
+This layering approach helped make my visualisations both analytical and narrative-driven.
+<br>
+<br>
+<br>
+<br>
+
+
+## Learning reflection
+
+One important idea I learned from Module 4 was how much the choice and layering of visualisations can affect the way data is interpreted and communicated. I learned that different chart types are useful for showing different kinds of relationships, and that combining multiple geoms or variables within the same graph can make a visualisation much more informative and expressive.
+
+For example, using colour intensity, jittered observations, and summary layers together allowed me to communicate several dimensions of information within a single graph rather than separating everything into multiple simpler charts. I started to understand that effective visualisations are not only about displaying data efficiently, but also about helping tell a clearer and more engaging story.
+
+This project also made me more curious about exploring more advanced data visualisation techniques and data transformation methods in R.
+
+<br>
+<br>
+<br>
+<br>
+
+## Appendix
+
+```{r file='data_visualisation.R', eval=FALSE, echo=TRUE}
+
+```

@@ -1,0 +1,91 @@
+---
+title: "Project 2"
+subtitle: "STATS 220 Semester One, 2026"
+author: "Yufan Yang"
+output: html_document
+date: "2026-03-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Since I always tend to feel hungry really soon after eating, the focus of my data collection is to observe my eating habits and satiety patterns, such as how different types of food and portion sizes affect the time it takes for me to feel hungry again. This can also be seen as a form of observation of my digestive patterns.
+
+I recorded the times at which I began to feel hungry and what I had eaten previously,and for each instance I recorded the type of food I consumed, the portion size, my perceived level of fullness after eating, the number of minutes that had passed since my last meal or snack,and whether i did any activities or not during this time.
+
+<br>
+
+#### My collected data:
+
+The data I collected allows me to explore relationships between variables, analysing and identify patterns, such as whether higher fullness ratings are associated with longer durations before hunger returns, and how my eating habits and physical activity may influence my digestion speed.
+
+This enables me to gain a deeper understanding of my own eating behaviour and to identify the factors that may affect how quickly I feel hungry.
+
+<br>
+
+#### Form Design Consideration
+
+One important principle in designing my form was to ensure that all questions are clear and easy to understand, so that respondents would not feel confused or unsure about how to answer. I applied this by using well-defined categories and simple response formats.
+
+For example, I used multiple-choice questions to classify food types and provided clear examples for each category to reduce ambiguity.<br>
+I also used linear scales (1–5) to measure fullness and portion size, allowing for more consistent responses across observations.<br>
+In addition, I included a short-answer question with response validation to collect numeric data (in minutes) for the duration until hunger, ensuring responses are in a consistent numeric format.
+
+<br>
+
+#### Google Form Link: [My google form](https://docs.google.com/forms/d/e/1FAIpQLScIXHitE9-blEjj86Ihj25JWWTblCRn6znumkrooDLLxlbQOg/viewform?usp=header)
+
+<br>
+
+#### About recording data:
+
+This task focuses on observational logging, which ideally should be recorded in real time. However, some of my observations were recorded retrospectively based on memory and notes taken in my phone, which may introduce slight inaccuracies in timing.
+Therefore, I did not rely on the automatically generated timestamp. Instead, I manually recorded the approximate times at which I felt hungry and entered them into the form in batches. The dataset represents approximately five days of daily activity, although it does not capture every meal or every instance of hunger in a strictly continuous manner.
+
+
+
+<br><br>
+
+## Dynamic report: [My dynamic report](https://ykmhk.github.io/stats220/)
+
+
+## Creativity
+
+I applied a lot of my own thinking to the design of the data collection method and the structure of the form. 
+
+For example, during the design process, I initially planned to record data immediately after each meal and ask, “After how many minutes did you start feeling hungry again?”. However, I realised that this question was not straightforward, as it required the respondent to recall both the exact time they had eaten and the exact time they started feeling hungry, all after consuming a new meal. This approach was not very logical and would require unnecessary effort from the respondent, potentially leading to inaccuracies due to reliance on memory.<br>
+To address this issue, I redesigned the form so that it is completed at the moment when the respondent starts feeling hungry. This allows the time since the previous meal to be recorded retrospectively, improving the accuracy of the data.
+
+**In addition**, I extended the basic requirements of the form by incorporating conditional logic for the physical activity question. I included a required question asking whether any physical activity was performed:
+* If the response is “Yes,” an optional follow-up question appears in section 2 asking for the level of activity. 
+* If “No,” the form can be submitted directly. This branching improves both the user experience and the quality of the data collected.<br>
+With this design i had ideas to extend more in dynamic report, so I used sum() with conditional logic to count the number of “Yes” and “No” responses so it can automatically determine which category was most common, including handling ties and missing values.
+
+These  design choices contribute to a dataset that is more accurate, user-friendly, and analytically meaningful.
+
+I also designed my bar plots to be highlight more patterns, relationships, and trends in the data instead of only showing the data,having more contextual meaning for myself.
+which inlcuding looking at:
+* Looking at whether physical activity affects hunger timing
+* Checking whether higher level of fullness lead to longer satiety
+
+
+## Learning reflection
+
+One important idea I learned from Module 2 is how to design forms that collect data more efficiently, while considering the perspective of the respondent. This includes using clear questions, logical branching, and structured response formats to make the data collection process easier and more reliable.
+
+I am also curious to explore more about data technologies, such as creating and presenting different types of graphs and developing more engaging and interactive visualisations for reports.
+
+I didn't work in a group for this project, but in the future, I can develop my group work skills by collaborating with peers on data collection and sharing responsibilities for presentation and such.
+
+## Appendix
+
+```{r file='exploration.R', eval=FALSE, echo=TRUE}
+
+```
+```{r file='dynamic_report.Rmd', eval=FALSE, echo=TRUE}
+
+```
+

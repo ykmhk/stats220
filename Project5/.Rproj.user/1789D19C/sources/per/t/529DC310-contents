@@ -1,0 +1,250 @@
+library(tidyverse)
+library(jsonlite)
+library(stringr)
+
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+explicit_songs<- song_data%>%
+  mutate(song_type= ifelse(explicit,
+                           "Explict",
+                           "Not explicit"))
+explicit_songs%>%
+  ggplot()+
+  geom_bar(aes(y=song_type))
+
+grouped_songs<- explicit_songs%>%
+  group_by(song_type)%>%
+  summarise(num_songs=n())
+
+grouped_songs%>%
+  ggplot()+
+  geom_col(aes(y=song_type,x=num_songs),stat="identity")
+
+
+
+library(tidyverse)
+library(jsonlite)
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+summarised_data <- song_data %>%
+  mutate(song_speed = ifelse(tempo > 120, 'fast', 'slow')) %>%
+  group_by(song_speed) %>%
+  summarise(n = n())
+
+ggplot(data = summarised_data) +
+  geom_col(aes(x = song_speed, y = n, fill = song_speed)) +
+  labs(title = 'Comparing the speed of songs', x = 'Speed of song based on tempo', y = 'Number of songs')
+
+
+library(tidyverse)
+library(jsonlite)
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+
+summarised_data <- song_data %>%
+  mutate(valence_group = case_when(
+    valence < 0.33 ~ 'sad',
+    valence < 0.67 ~ 'OK',
+    TRUE ~ 'happy')) %>%
+  group_by(mode_name, valence_group) %>%
+  summarise(mean_tempo = mean(tempo, na.rm = TRUE))
+
+summarised_data %>%
+  ggplot() +
+  geom_point(aes(x = mean_tempo, y = mode_name, colour = valence_group), size = 5)
+
+
+library(tidyverse)
+library(jsonlite)
+
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4B.json")
+
+genre_data <- song_data %>%
+  separate_rows(artist_genre, sep = ",") %>%
+  group_by(artist_genre) %>%
+  filter(n() >= 10)
+
+glimpse(song_data)
+
+summarised_data <- genre_data %>%
+  group_by(artist_genre) %>%
+  summarise(mean_danceability = mean(danceability))
+
+ggplot() +
+  geom_point(data = summarised_data,
+             aes(x = mean_danceability,
+                 y = reorder(artist_genre, mean_danceability)),
+             shape = 17,
+             colour = "red",
+             size = 4) +
+  geom_jitter(data = genre_data,
+              aes(x = danceability,
+                  y = artist_genre),
+              height = 0.3,
+              colour = "pink",
+              size = 2) +
+  labs(title = "Comparing danceability of songs by genre",
+       y = "Genre of song artist",
+       x = "Danceability of song") +
+  theme_minimal()
+
+
+data <- read_csv("https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants1.csv")
+
+# how many rows
+nrow(data)
+
+# how many "unique" students
+data$private_name %>% unique() %>% length()
+
+# grouping and summarising by student
+grouped_data <- data %>%
+  group_by(private_name) %>%
+  summarise(total_duration_minutes = sum(duration_minutes))
+
+# average minutes attended
+grouped_data$total_duration_minutes %>% mean() %>% round(1)
+
+# visualising the data - not trying to be fancy!
+# just want to do a sense check
+grouped_data %>%
+  ggplot() +
+  geom_bar(aes(x = total_duration_minutes))
+
+
+
+url1 <- "https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants1.csv"
+url2 <- "https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants12.csv"
+
+d1<- read.csv(url1)
+d2<- read.csv(url2)
+
+nrow(d1)
+d1$private_name%>%
+  unique()%>%
+  length()
+
+all_data<- bind_rows(d1,d2)
+round(mean(all_data$duration_minutes),1)
+
+summarized<-all_data%>%
+  group_by(private_name)%>%
+  summarise(total_duration_minutes= sum(duration_minutes))
+
+max(summarized$total_duration_minutes)
+
+summarizedroom<-all_data%>%
+  group_by(date_lecture, private_name) %>%
+  summarise(n=n())
+
+
+apple_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vR6jVuO3F3DNwX1WApTvCfYqfjehcNKHmuDqupk2_0vJe0lnf81dmUlsXZGkZKmaCeallS5Dqch05ks/pub?gid=1338968646&single=true&output=csv") %>%
+  slice(12 : 78)
+
+nchar(apple_data$trackName[20])
+
+apple_data<-apple_data%>%
+  mutate(track_name_lower = str_to_lower(trackName),
+         track_name_clean= str_remove_all(track_name_lower,"[[:punct:]]"))
+apple_data$track_name_lower[28]
+apple_data$track_name_clean[18]
+
+apple_data %>%
+  separate_rows(track_name_clean, sep = " ") %>%
+  distinct(track_name_clean) %>%
+  summarise(total_words = n())
+
+
+# uses the packages jsonlite and glue 
+google_translate <- function(fromText, fromLanguage, toLanguage){
+  fromText <- paste(fromText, collapse="|")
+  url <- URLencode(glue("https://script.google.com/macros/s/AKfycbx3Bl6TUgxuG3YlqwEuWdADn9TeB05TpP0mzPRYzT1GKmBTZVk/exec?q={fromText}&source={fromLanguage}&target={toLanguage}"))
+  fromJSON(url)
+}
+
+lyrics <- "Now, this is a story all about how my life got flipped-turned upside down"
+
+# note how I am also mutating a column for the language used
+data_m <- google_translate(fromText = lyrics, 
+                           fromLanguage = "EN", 
+                           toLanguage = "MI") %>%
+  mutate(same = ifelse(original_phrase == reverse_phrase,
+                       "yes",
+                       "no"),
+         language = "Te Reo")
+
+data_j <- google_translate(fromText = lyrics, 
+                           fromLanguage = "EN", 
+                           toLanguage = "JA") %>%
+  mutate(same = ifelse(original_phrase == reverse_phrase,
+                       "yes",
+                       "no"),
+         language = "Japanese")
+
+bind_rows(data_m, data_j)
+
+
+headlines_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSzM_3hRnNKMfAv3-bn_yF833sqB7AWrMVEGs2dRKJ77myE7oHX2VKDlKWg6NmiVZ5Cj5Y5gFY4KSo1/pub?gid=0&single=true&output=csv") %>%
+  slice(165 : 315)
+
+
+# 6A quiz
+
+headlines_data$headline[148]
+headline_words1<-headlines_data$headline[149]%>%str_split(" ") %>% unlist()
+headline_words1[1]
+headline_words1<-headlines_data$headline[149]%>%str_to_lower()%>%str_remove_all("[[:punct:]]")%>%str_split(" ") %>% unlist()
+headline_words1
+
+headline_words2<-headlines_data$headline[150]%>%str_to_lower()%>%str_remove_all("[[:punct:]]")%>%str_split(" ") %>% unlist()
+headline_words2
+length(headline_words2)
+
+all_words<-union(headline_words1,headline_words2)
+all_words
+length(all_words)
+
+same_words<-intersect(headline_words1,headline_words2)
+same_words
+length(same_words)
+
+get_similarity <- function(phrase1, phrase2){
+  
+  words1 <- phrase1 %>% str_squish() %>% str_to_lower()%>%str_remove_all("[[:punct:]]") %>% str_split(" ") %>% unlist()
+  words2 <- phrase2 %>% str_squish() %>% str_to_lower()%>%str_remove_all("[[:punct:]]") %>% str_split(" ") %>% unlist()
+  
+  num_same <- intersect(words1, words2) %>% length()
+  num_total <- union(words1, words2) %>% length()
+  
+  round(num_same / num_total,1) # remember last thing created is returned by default, or use return()
+}
+
+phrase1_m <- headlines_data$headline[12]
+phrase2_m <- headlines_data$headline[]
+
+phrase1_m
+phrase2_m
+get_similarity(phrase1_m, phrase2_m)
+
+compare_headlines <- tibble(headline1 = headlines_data$headline[1:75], headline2 = headlines_data$headline[76:150])
+similarity_data<-compare_headlines%>%
+  rowwise()%>%
+  mutate(similarity_score = get_similarity(headline1,headline2))
+similarity_data
+similarity_data$similarity_score[53]
+max(similarity_data$similarity_score)
+round(mean(similarity_data$similarity_score),1)
+
+
+similarity_data %>%
+  ggplot() +
+  geom_density(aes(x = similarity_score))
+
+word<-substring(c("abc", "def"), 1, 2)
+word
+date<-str_sub("01/04/2025", 4, 5)
+date
+date1<-substring("01/04/2025", 4, 5)
+date1
+letter<- str_sub("abcdef", -3, -1)
+letter #substring can't do negetaive string index
+x <- "abcdef"
+str_sub(x, 2, 4) <- "XYZ"
+x

@@ -1,0 +1,228 @@
+#2025
+
+library(tidyverse)
+library(rvest)
+library(lubridate)
+
+################ ## Q2 ################
+
+
+ed_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS0KP0zEnwhekrBrUk_AC0_kCFb8Eu2LlWpwBHNxP8m7SXaVZXw5zlXDXOrMabFh591RVF6MX0SsDv5/pub?gid=0&single=true&output=csv")
+## Part A
+
+
+ed_data<-ed_data%>%mutate(new_date = dmy(date))
+
+view_data <- ed_data %>%
+  filter(views > 0, date != "########") %>%
+  #group_by(date, user_id) %>% #each row is one user per day
+  #summarise(total_views = sum(views)) %>% #total views a user made that day
+  #ungroup() %>%
+  group_by(date) %>%
+  summarise(users_viewed = n()) %>%
+  mutate(
+    new_date = dmy(date),
+    month_date = month(new_date,label=TRUE)
+  )
+view_data
+#months <- c(
+#"Jan","Feb","Mar","Apr","May","Jun",
+#"Jul","Aug","Sep","Oct","Nov","Dec"
+#)  
+#month_date = months[as.numeric(str_sub(date, 4, 5))]
+
+
+
+#view_data <- ed_data %>%
+#  filter(views > 0) %>%
+#  distinct(date, user_id) %>%
+#  count(date, name = "users_viewed") #new col name
+#view_data
+
+view_data %>%
+  ggplot(aes(x = new_date, y = users_viewed)) +
+  geom_col(fill = "black")+
+  scale_x_continuous( #as.Date in 3B
+    breaks = as.numeric(as.Date(c("2025-03-01","2025-04-01", "2025-05-01"))), 
+    labels = c("Mar","Apr", "May")
+  )+
+  labs(x="Day",y="Number of users")
+
+
+
+
+
+## Part B
+active_data <- ed_data %>%
+  mutate(active = ifelse(views>0|contributions>0,"yes","no"))
+active_data
+active_per_day <- active_data %>%
+  group_by(new_date)%>%
+  summarise(num_users = sum(active == "yes")) %>%
+  arrange(new_date)
+
+active_per_day
+
+
+## Part C
+top_10_student_contributors <- ed_data %>%
+  filter(role=="student")%>%
+  group_by(user_id) %>%
+  summarise(mean_contributions = sum(contributions)) %>%
+  arrange(desc(mean_contributions)) %>%
+  slice(1:10)
+top_10_student_contributors
+
+top_1<- top_10_student_contributors %>% slice(1)
+top_1
+
+
+
+## Part D
+wday_viewed_data <- ed_data %>%
+  mutate(weekday = wday(new_date,label=TRUE,week_start=7))
+wday_viewed_data %>%
+  ggplot() +
+  geom_col(aes(x = weekday, y = views))
+
+
+
+################ ## Q5 ################
+
+
+url <- "https://datalandscapes.online/scrapeable/scrappy.html"
+# print the URL so you can copy into a web browser url
+page <- read_html(url)
+course_title <- page%>%
+  html_elements("h2")%>%
+  html_text2()
+course_description <- page%>%
+  html_elements("#description")%>%
+  html_text2()
+course_topics <- page%>%
+  html_elements(".awesome")%>%
+  html_text2()
+course_topics
+uni_logo <- page%>%
+  html_elements("img")%>%
+  html_attr("src")
+
+course_dco <- page %>%
+  html_elements(".dco") %>%
+  html_attr("href")
+
+
+website_data <- tibble(
+  course_title,
+  course_description,
+  course_topics,
+  uni_logo,
+  course_dco)
+website_data
+
+
+
+
+################ ## Q6 ################
+
+thread_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS0KP0zEnwhekrBrUk_AC0_kCFb8Eu2LlWpwBHNxP8m7SXaVZXw5zlXDXOrMabFh591RVF6MX0SsDv5/pub?gid=866779028&single=true&output=csv")
+
+## Part A
+text_length <- thread_data %>%
+  mutate(num_chars_text = nchar(text))
+text_length %>%
+  ggplot() +
+  geom_boxplot(aes(x = num_chars_text,
+                   y = category, colour = category))
+
+text_length<-text_length%>%
+  mutate(num_chars_group= case_when(
+    num_chars_text<200 ~"Below 200 characters",
+    400>num_chars_text &num_chars_text>200 ~"Between 200 and 400 characters",
+    TRUE ~"More than 400 characters"
+  ))%>%
+  group_by(category)%>%
+  count(num_chars_group)
+
+text_length %>%
+  ggplot() +
+  geom_count(aes(x = num_chars_group,
+                 y = category, 
+                 colour = category,
+                 size=n))+
+  guides(colour="none")+
+  labs(y = "Thread Category", x = "Number of characters in text of thread")+
+  theme_minimal()
+
+
+
+
+## Part B
+
+key_words <- c("what", "why", "how", "when", "where")
+words <- thread_data %>%
+  mutate(clean_text = text %>% 
+           str_to_lower()%>%
+           str_remove_all("[[:punct:]]") %>%
+           str_squish())%>%
+  separate_rows(clean_text,sep=" ")%>%
+  filter(clean_text %in% key_words)%>%
+  group_by(clean_text)%>%
+  count(clean_text) %>%
+  arrange(desc(n))
+  
+words
+  
+words %>%
+  ggplot(aes(y = reorder(clean_text,n),
+             x = n)) +
+  geom_col(fill="white")+
+  geom_text(aes(label = n), 
+            color = "black") +
+  labs( y="key_word",
+        x="num_used")
+  
+  
+
+
+
+## Part C
+get_similarity <- function(phrase1, phrase2){
+  words1 <- phrase1 %>% 
+    str_squish() %>% 
+    str_remove_all("[[:punct:]]")%>% 
+    str_to_lower()%>% 
+    str_split(" ") %>% 
+    unlist() 
+  words2 <- phrase2 %>% 
+    str_squish() %>% 
+    str_remove_all("[[:punct:]]")%>% 
+    str_to_lower()%>% 
+    str_split(" ") %>% 
+    unlist()  
+  
+  num_same <- intersect(words1, words2) %>% length()
+  num_total <- union(words1, words2) %>% length()
+  num_same / num_total
+}
+
+longest_titles <- thread_data%>%
+  mutate(title_length=nchar(title))%>%
+  arrange(desc(title_length))%>%
+  slice(1:2)%>%
+  pull(title)
+longest_titles
+
+p1<-longest_titles[1]
+p2<-longest_titles[2]
+
+get_similarity(p1,p2)
+
+
+
+
+
+
+
+
+

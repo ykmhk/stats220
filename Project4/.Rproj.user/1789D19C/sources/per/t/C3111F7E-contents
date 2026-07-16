@@ -1,0 +1,134 @@
+library(tidyverse)
+library(jsonlite)
+
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+explicit_songs<- song_data%>%
+  mutate(song_type= ifelse(explicit,
+                           "Explict",
+                           "Not explicit"))
+explicit_songs%>%
+  ggplot()+
+  geom_bar(aes(y=song_type))
+
+grouped_songs<- explicit_songs%>%
+  group_by(song_type)%>%
+  summarise(num_songs=n())
+
+grouped_songs%>%
+  ggplot()+
+  geom_col(aes(y=song_type,x=num_songs),stat="identity")
+
+
+
+library(tidyverse)
+library(jsonlite)
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+summarised_data <- song_data %>%
+  mutate(song_speed = ifelse(tempo > 120, 'fast', 'slow')) %>%
+  group_by(song_speed) %>%
+  summarise(n = n())
+
+ggplot(data = summarised_data) +
+  geom_col(aes(x = song_speed, y = n, fill = song_speed)) +
+  labs(title = 'Comparing the speed of songs', x = 'Speed of song based on tempo', y = 'Number of songs')
+
+
+library(tidyverse)
+library(jsonlite)
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4A.json")
+
+summarised_data <- song_data %>%
+  mutate(valence_group = case_when(
+    valence < 0.33 ~ 'sad',
+    valence < 0.67 ~ 'OK',
+    TRUE ~ 'happy')) %>%
+  group_by(mode_name, valence_group) %>%
+  summarise(mean_tempo = mean(tempo, na.rm = TRUE))
+
+summarised_data %>%
+  ggplot() +
+  geom_point(aes(x = mean_tempo, y = mode_name, colour = valence_group), size = 5)
+
+
+library(tidyverse)
+library(jsonlite)
+
+song_data <- fromJSON("https://stat.auckland.ac.nz/~fergusson/stats220_S124/data/lab4B.json")
+
+genre_data <- song_data %>%
+  separate_rows(artist_genre, sep = ",") %>%
+  group_by(artist_genre) %>%
+  filter(n() >= 10)
+
+glimpse(song_data)
+
+summarised_data <- genre_data %>%
+  group_by(artist_genre) %>%
+  summarise(mean_danceability = mean(danceability))
+
+ggplot() +
+  geom_point(data = summarised_data,
+             aes(x = mean_danceability,
+                 y = reorder(artist_genre, mean_danceability)),
+             shape = 17,
+             colour = "red",
+             size = 4) +
+  geom_jitter(data = genre_data,
+              aes(x = danceability,
+                  y = artist_genre),
+              height = 0.3,
+              colour = "pink",
+              size = 2) +
+  labs(title = "Comparing danceability of songs by genre",
+       y = "Genre of song artist",
+       x = "Danceability of song") +
+  theme_minimal()
+
+
+data <- read_csv("https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants1.csv")
+
+# how many rows
+nrow(data)
+
+# how many "unique" students
+data$private_name %>% unique() %>% length()
+
+# grouping and summarising by student
+grouped_data <- data %>%
+  group_by(private_name) %>%
+  summarise(total_duration_minutes = sum(duration_minutes))
+
+# average minutes attended
+grouped_data$total_duration_minutes %>% mean() %>% round(1)
+
+# visualising the data - not trying to be fancy!
+# just want to do a sense check
+grouped_data %>%
+  ggplot() +
+  geom_bar(aes(x = total_duration_minutes))
+
+
+
+url1 <- "https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants1.csv"
+url2 <- "https://stat.auckland.ac.nz/~fergusson/stats220_S124/zoom_data/participants12.csv"
+
+d1<- read.csv(url1)
+d2<- read.csv(url2)
+
+nrow(d1)
+d1$private_name%>%
+  unique()%>%
+  length()
+
+all_data<- bind_rows(d1,d2)
+round(mean(all_data$duration_minutes),1)
+
+summarized<-all_data%>%
+  group_by(private_name)%>%
+  summarise(total_duration_minutes= sum(duration_minutes))
+
+max(summarized$total_duration_minutes)
+
+summarizedroom<-all_data%>%
+  group_by(date_lecture, private_name) %>%
+  summarise(n=n())
