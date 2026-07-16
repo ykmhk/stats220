@@ -3,6 +3,7 @@
 ## This is my repo for STATS 220. 
 
 ## 🚧 the server that course provided us might be no longer correctly working.
+you could choose to download my html files to view them.
 
 
 
@@ -14,4 +15,4 @@
      
 * btw this is one of my favorite artist i'd listen to when studying stats220 and others: [Bialystocks](https://open.spotify.com/artist/3y24PAHjsJ3rWvMWERM7Oe?si=B2ViJMWdT9OJTzFlCSUPzQ)
   
-*A meme that captures how I currently feel about my university studies is* ![](pic.jpg)
+* A meme that captures how I currently feel about my university studies is* ![](pic.jpg)
