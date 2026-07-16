@@ -2,6 +2,10 @@
 
 ## This is my repo for STATS 220. 
 
+## 🚧 the server that course provided us might be no longer correctly working.
+
+
+
 * **A little about me:**![](https://media.tenor.com/jzLenAc6npoAAAAi/computer-computador.gif)
   1. I am undertaking a degree in Bachelor of Science major in computer science.
   2. I am taking STATS 220 because I am particularly interested in the practical application
